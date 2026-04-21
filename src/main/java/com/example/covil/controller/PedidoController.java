@@ -1,3 +1,5 @@
+package com.example.covil.controller;
+
 import com.example.covil.dto.AtualizarStatusDTO;
 import com.example.covil.dto.PedidoDTO;
 import com.example.covil.model.Pedido;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/pedidos")
 public class PedidoController {
 
     @Autowired
