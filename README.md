@@ -1,29 +1,35 @@
-# 🍔 Hamburgueria API - Gestão de Pedidos e Stock
+# 🍔 Covil - Sistema de Gestão de Hamburgueria
 
-Esta é uma API REST desenvolvida em **Spring Boot** para gerir as operações de uma hamburgueria. O sistema permite o controlo total desde o stock de ingredientes até ao fecho de caixa diário através de um dashboard.
+O **Covil** é uma API REST desenvolvida em Java com Spring Boot para gerenciar o fluxo de pedidos de uma hamburgueria, focando no controle real de insumos.
 
----
-
-## 🚀 Funcionalidades Principais
-
-- **Gestão de Stock**: Registo de ingredientes com validação de quantidades.
-- **Receitas Inteligentes**: Associação de ingredientes a produtos. Ao vender um hambúrguer, o sistema abate automaticamente as quantidades exatas do stock.
-- **Fluxo de Pedidos**: Sistema de pedidos com estados (Recebido, Em Preparação, Pronto, Entregue e Cancelado).
-- **Segurança de Negócio**: Impedimento de pedidos caso não haja stock suficiente, utilizando exceções personalizadas.
-- **Dashboard de Gestão**: Endpoint que resume o faturamento total (excluindo cancelados), total de pedidos e alerta de itens com stock baixo.
+## 🚀 Diferenciais do Projeto
+- **Baixa de Estoque por Insumo:** Ao vender um hambúrguer, o sistema desconta automaticamente cada ingrediente (pão, carne, queijo) da ficha técnica.
+- **Integridade de Dados:** Uso de transações (`@Transactional`) para garantir que o estoque não fique inconsistente em caso de erro.
+- **Validação de Negócio:** Impede a venda de produtos sem estoque suficiente e valida dados de entrada.
+- **Arquitetura Limpa:** Separação de responsabilidades entre DTOs, Controllers, Services e Repositories.
 
 ## 🛠️ Tecnologias Utilizadas
+- **Java 17+**
+- **Spring Boot 3**
+- **Spring Data JPA**
+- **PostgreSQL** (Banco de dados)
+- **Lombok** (Produtividade)
+- **Bean Validation** (Segurança de dados)
 
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
-![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
+## 📌 Principais Endpoints
 
----
+### Ingredientes
+- `POST /ingredientes`: Cadastra um novo insumo.
+- `GET /ingredientes`: Lista o estoque atual.
 
-## 📋 Como Executar o Projeto
+### Produtos
+- `POST /produtos`: Cria um produto vinculando ingredientes (Ficha Técnica).
 
-1. **Clonar o repositório:**
-   ```bash
-   git clone [https://github.com/teu-utilizador/hamburgueria-api.git](https://github.com/teu-utilizador/hamburgueria-api.git)
+### Pedidos
+- `POST /pedidos`: Realiza a venda e abate o estoque.
+- `PUT /pedidos/{id}/cancelar`: Cancela o pedido e estorna os insumos.
+
+## 🏁 Como Rodar o Projeto
+1. Clone o repositório.
+2. Configure o banco de dados no `application.properties`.
+3. Execute `./mvnw spring-boot:run`.
