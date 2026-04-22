@@ -38,4 +38,8 @@ public class PedidoController {
     public List<Pedido> listarTodos() {
         return pedidoService.listarTodos();
     }
+    @GetMapping("/fila")
+    public List<Pedido> getFilaCozinha() {
+        return pedidoService.listarPedidosPendentes();
+    }
 }

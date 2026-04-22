@@ -1,12 +1,15 @@
 package com.example.covil.service;
 
 
+import com.example.covil.dto.DashboardDTO;
 import com.example.covil.dto.ItemPedidoDTO;
 import com.example.covil.dto.PedidoDTO;
+import com.example.covil.model.Ingrediente;
 import com.example.covil.model.ItemPedido;
 import com.example.covil.model.Pedido;
 import com.example.covil.model.Produto;
 import com.example.covil.model.enums.StatusPedido;
+import com.example.covil.repository.IngredienteRepository;
 import com.example.covil.repository.PedidoRepository;
 import com.example.covil.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ import java.util.List;
 
 @Service
 public class PedidoService {
+
+    @Autowired
+    private IngredienteRepository ingredienteRepository; // Adicione esta linha junto aos outros @Autowired
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -96,8 +102,35 @@ public class PedidoService {
 
         return pedidoRepository.save(pedido);
     }
+    public DashboardDTO obterDadosDashboard() {
+        // 1. Busca o faturamento total usando a query que vamos colocar no Repository
+        BigDecimal faturamento = pedidoRepository.calcularFaturamentoTotal();
+
+        // 2. Busca o total de pedidos feitos hoje
+        Long hoje = pedidoRepository.contarPedidosHoje();
+
+        // 3. Busca o total geral de pedidos (método padrão do Spring Data)
+        Long totalGeral = pedidoRepository.count();
+
+        // 4. Busca ingredientes com estoque baixo (ex: menos de 5 unidades)
+        // Você precisará criar esse método 'findByQuantidadeLessThan' no IngredienteRepository
+        List<Ingrediente> estoqueCritico = ingredienteRepository.findByQuantidadeLessThan(5);
+
+        // 5. Instancia o SEU DashboardDTO com as informações coletadas
+        DashboardDTO dashboard = new DashboardDTO();
+        dashboard.setTotalPedidos(totalGeral);
+        dashboard.setTotalPedidosHoje(hoje); // Adicione esse campo no seu DTO se ainda não tiver
+        dashboard.setFaturamentoTotal(faturamento != null ? faturamento : BigDecimal.ZERO);
+        dashboard.setItensEstoqueBaixo(estoqueCritico);
+
+        return dashboard;
+    }
 
     public List<Pedido> listarTodos() {
         return pedidoRepository.findAll();
+    }
+    public List<Pedido> listarPedidosPendentes() {
+        // Retorna apenas o que a cozinha precisa fazer
+        return pedidoRepository.findByStatus(StatusPedido.RECEBIDO);
     }
 }

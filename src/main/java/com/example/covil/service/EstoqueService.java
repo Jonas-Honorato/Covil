@@ -34,4 +34,16 @@ public class EstoqueService {
             ingredienteRepository.save(ing);
         }
     }
+    @Transactional
+    public void reporEstoque(Long ingredienteId, Integer quantidadeAdicionada) {
+        // Buscamos o ingrediente. Se não existir, usamos a sua exceção ou uma genérica do Java.
+        Ingrediente ing = ingredienteRepository.findById(ingredienteId)
+                .orElseThrow(() -> new SaldoInsuficienteException("Ingrediente com ID " + ingredienteId + " não encontrado."));
+
+        // Somamos a nova quantidade
+        ing.setQuantidade(ing.getQuantidade() + quantidadeAdicionada);
+
+        // Salvamos a atualização
+        ingredienteRepository.save(ing);
+    }
 }
