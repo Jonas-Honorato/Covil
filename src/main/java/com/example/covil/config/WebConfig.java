@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         // Liberando acesso para o Front-end
         registry.addMapping("/**") // Libera todos os endpoints da API
                 .allowedOrigins("http://localhost:5173") // URL padrão do Vite
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }

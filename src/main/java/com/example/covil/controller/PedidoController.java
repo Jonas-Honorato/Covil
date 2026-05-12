@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/pedidos")
 @Tag(name = "Fila de Pedidos", description = "Gerenciamento do fluxo de produção: do recebimento à entrega")

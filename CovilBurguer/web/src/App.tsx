@@ -30,13 +30,16 @@ function App() {
   };
 
   const alterarStatus = async (id: number, novoStatus: string) => {
-    try {
-      await axios.put(`http://localhost:8080/pedidos/${id}/status`, { status: novoStatus });
-      fetchPedidos();
-    } catch (error) {
-      console.error("Erro ao atualizar status:", error);
-    }
-  };
+  try {
+    // Trocamos .put por .patch para dar match com o seu Java
+    await axios.patch(`http://localhost:8080/pedidos/${id}/status`, { 
+      novoStatus: novoStatus // O nome aqui deve ser 'novoStatus' para bater com seu AtualizarStatusDTO
+    });
+    fetchPedidos();
+  } catch (error) {
+    console.error("Erro ao atualizar status:", error);
+  }
+};
 
   useEffect(() => {
     fetchPedidos();
